@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
+import Pokeball from '../images/pokeball.png'
 
 class Home extends Component {
   state = {
-    posts: [ ]
+    posts: []
   }
   componentDidMount(){
     axios.get('https://jsonplaceholder.typicode.com/posts')
@@ -11,27 +13,35 @@ class Home extends Component {
       console.log(res);
       this.setState({
         posts: res.data.slice(0, 10)
-    }) 
+    });
   })
 }
   render() {
-    const { posts } = this.state;
-    const postList = posts.length ? posts.map(post => {
+    const { posts } = this.state
+    const postList = posts.length ? (posts.map(post => {
       return (
         <div className="post card" key={post.id}>
           <div className="card-content">
-            <span className="card-title">{post.title}</span>
+           <Link to={'/' + post.id}>
+
+            <span className="card-title red-text">{post.title}</span>
+            </Link>
             <p>{post.body}</p>
           </div>
         </div>
       )
-     }) : "there are no posts";
+    })
+     ) : (
+       <div className="center">there are no posts
+       </div>
+       )
+
     return (
-      <div className="container">
-        <h4 className="center">
-          Home
-        </h4> 
-        {postList}
+      <div>
+        <div className="container home">
+          <h4 className="center">Home</h4> 
+          {postList}
+        </div>
       </div>
     )
   }
